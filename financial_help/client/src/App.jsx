@@ -1,13 +1,23 @@
 import React from "react";
-import FinancialForm from "./components/FinantialHelp";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
-function App() {
+import FinancialForm from "./components/FinantialHelp/FinantialHelp";
+import LearnFinance from "./components/LearnFinance/LearnFinance";
+import TopicDescription from "./components/LearnFinance/ModuleDescription/TopicDescription"; // New component for topic description
+import Navbar from "./components/Navbar/Navbar";
+
+const App = () => {
   return (
-    <div className="App">
-      <h1>Financial Management App</h1>
-      <FinancialForm />
-    </div>
+    <Router>
+      <Navbar />
+      <Routes>
+        <Route path="/financialhelp" element={<FinancialForm />} />
+        <Route path="/learnfinance" element={<LearnFinance />} />
+        <Route path="/learnfinance/:id" element={<TopicDescription />} />{" "}
+        {/* Add dynamic route */}
+      </Routes>
+    </Router>
   );
-}
+};
 
 export default App;

@@ -1,5 +1,5 @@
 const User = require("../models/userModel");
-const { getFinancialPlan } = require("../routes/financialhelp");
+// const { getFinancialPlan } = require("./financialhelp");
 // Create new user
 exports.createUser = async (req, res) => {
   const {
@@ -24,7 +24,7 @@ exports.createUser = async (req, res) => {
       emis,
     });
     await newUser.save();
-    getFinancialPlan(req.body);
+    // getFinancialPlan(req.body);
     res.status(201).json(newUser);
   } catch (error) {
     res.status(500).json({ message: "Error creating user", error });
