@@ -1,5 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom"; // Import Link for navigation
+import { Book, Video } from "lucide-react";
 
 const financeTopics = [
   "Personal Finance Basics",
@@ -44,32 +45,34 @@ const financeTopics = [
 
 const LearnFinance = () => {
   return (
-    <div className="container mx-auto py-8">
-      <h1 className="text-4xl font-bold text-center mb-8">Modules</h1>
+    <div className="container mx-auto py-12 px-4">
+      <h1 className="text-4xl font-bold text-center mb-12 text-gray-800">
+        Finance Learning Modules
+      </h1>
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
         {financeTopics.map((topic, index) => (
           <div
             key={index}
-            className="bg-white p-6 rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300"
+            className="bg-white p-6 rounded-lg shadow-md hover:shadow-xl transition-shadow duration-300 border border-gray-200"
           >
-            <h2 className="text-xl font-semibold mb-2">
+            <h2 className="text-xl font-semibold mb-3 text-indigo-700">
               {index + 1}. {topic}
             </h2>
-            <p className="text-gray-600 mb-4">
-              Learn about {topic} and how it can help you manage your finances
-              effectively. This module will provide an overview and important
-              details.
+            <p className="text-gray-600 mb-4 h-20 overflow-hidden">
+              Explore {topic} and its impact on your financial well-being. This
+              module offers comprehensive insights and practical knowledge.
             </p>
-            <div className="flex justify-between items-center">
-              {/* Replace anchor with Link for navigation */}
+            <div className="flex justify-between items-center mt-4">
               <Link
-                to={`/learnfinance/${index}`} // Dynamic navigation based on topic index
-                className="text-blue-500 hover:text-blue-700"
+                to={`/learnfinance/${index}`}
+                className="flex items-center text-indigo-600 hover:text-indigo-800 transition-colors"
               >
-                View module
+                <Book size={18} className="mr-1" />
+                <span>View module</span>
               </Link>
-              <button className="text-blue-500 hover:text-blue-700">
-                Watch videos
+              <button className="flex items-center text-green-600 hover:text-green-800 transition-colors">
+                <Video size={18} className="mr-1" />
+                <span>Watch videos</span>
               </button>
             </div>
           </div>

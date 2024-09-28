@@ -25,7 +25,8 @@ Example:
   "detailed_description": "Provide a detailed description.",
   "key_takeaways": "List key takeaways.",
   "conclusion": "Conclude the description.",
-  "links_for_further_study": ["https://example.com/resource1", "https://example.com/resource2"]
+  "links_for_further_study": ["https://example.com/resource1", "https://example.com/resource2"],
+  "links_for_youtube": ["https://example.com/youtube1", "https://example.com/youtube2"]
 }`;
 
   try {
@@ -78,11 +79,9 @@ Example:
     return res.status(200).json({ financialAdvice: parsedResponse });
   } catch (error) {
     console.error("Error generating content:", error.message);
-    res
-      .status(500)
-      .json({
-        message: "Error generating financial advice",
-        error: error.message,
-      });
+    res.status(500).json({
+      message: "Error generating financial advice",
+      error: error.message,
+    });
   }
 };

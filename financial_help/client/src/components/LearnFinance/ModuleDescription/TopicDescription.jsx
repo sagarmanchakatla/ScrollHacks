@@ -1,7 +1,16 @@
 import React, { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import ReactMarkdown from "react-markdown";
-import { ChevronDown, ChevronUp, Book, Link as LinkIcon } from "lucide-react";
+import {
+  ChevronDown,
+  ChevronUp,
+  Book,
+  Link as LinkIcon,
+  ArrowLeft,
+  ArrowRight,
+  PlayCircle,
+  FileText,
+} from "lucide-react";
 
 const financeTopics = [
   "Personal Finance Basics",
@@ -55,12 +64,15 @@ const TopicDescription = () => {
     key_takeaways: "",
     conclusion: "",
     links_for_further_study: [],
+    links_for_youtube: [],
   });
   const [expandedSections, setExpandedSections] = useState({});
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
+        setLoading(true);
         const response = await fetch(
           "http://localhost:8000/api/generate-topic-description",
           {
@@ -77,23 +89,11 @@ const TopicDescription = () => {
         }
 
         const result = await response.json();
-
-        setDescription({
-          background: result.financialAdvice.background || "",
-          need: result.financialAdvice.need || "",
-          importance: result.financialAdvice.importance || "",
-          detailed_description:
-            result.financialAdvice.detailed_description || "",
-          key_takeaways: result.financialAdvice.key_takeaways || "",
-          conclusion: result.financialAdvice.conclusion || "",
-          links_for_further_study: Array.isArray(
-            result.financialAdvice.links_for_further_study
-          )
-            ? result.financialAdvice.links_for_further_study
-            : [],
-        });
+        setDescription(result.financialAdvice);
       } catch (error) {
         console.error("Error fetching data:", error);
+      } finally {
+        setLoading(false);
       }
     };
     fetchData();
@@ -107,7 +107,7 @@ const TopicDescription = () => {
     <div className="mb-6 bg-white rounded-lg shadow-md overflow-hidden">
       <button
         onClick={() => toggleSection(title)}
-        className="w-full px-6 py-4 flex justify-between items-center bg-gradient-to-r from-purple-500 to-indigo-600 text-white"
+        className="w-full px-6 py-4 flex justify-between items-center bg-green-500 text-white"
       >
         <div className="flex items-center">
           {icon}
@@ -127,11 +127,37 @@ const TopicDescription = () => {
     </div>
   );
 
+  if (loading) {
+    return (
+      <div className="flex justify-center items-center h-screen">
+        <div className="animate-spin rounded-full h-16 w-16 border-t-2 border-b-2 border-green-500"></div>
+      </div>
+    );
+  }
+
   return (
     <div className="container mx-auto py-8 px-4 max-w-4xl">
-      <h1 className="text-4xl font-bold text-center mb-8 text-transparent bg-clip-text bg-gradient-to-r from-purple-600 to-indigo-600">
-        {topic}
-      </h1>
+      <div className="mb-8">
+        <h1 className="text-4xl font-bold mb-2">
+          {Number(id) + 1}. {topic}
+        </h1>
+        <div className="flex space-x-4">
+          <a
+            href={description.links_for_youtube[0]}
+            className="flex items-center text-blue-600 hover:underline"
+          >
+            <PlayCircle size={20} className="mr-1" />
+            Watch videos
+          </a>
+          <Link
+            to="#"
+            className="flex items-center text-blue-600 hover:underline"
+          >
+            <FileText size={20} className="mr-1" />
+            Download PDF
+          </Link>
+        </div>
+      </div>
 
       {renderSection("Background", description.background, <Book size={20} />)}
       {renderSection("Need", description.need, <Book size={20} />)}
@@ -152,7 +178,7 @@ const TopicDescription = () => {
         <div className="mb-6 bg-white rounded-lg shadow-md overflow-hidden">
           <button
             onClick={() => toggleSection("Further Study")}
-            className="w-full px-6 py-4 flex justify-between items-center bg-gradient-to-r from-purple-500 to-indigo-600 text-white"
+            className="w-full px-6 py-4 flex justify-between items-center bg-green-500 text-white"
           >
             <div className="flex items-center">
               <LinkIcon size={20} />
@@ -189,24 +215,26 @@ const TopicDescription = () => {
         {Number(id) > 0 && (
           <Link
             to={`/learnfinance/${Number(id) - 1}`}
-            className="px-4 py-2 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300 transition-colors"
+            className="flex items-center px-4 py-2 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300 transition-colors"
           >
+            <ArrowLeft size={20} className="mr-2" />
             Previous Module
           </Link>
         )}
-        {Number(id) + 1 < financeTopics.length && (
+        {Number(id) < financeTopics.length - 1 && (
           <Link
             to={`/learnfinance/${Number(id) + 1}`}
-            className="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors"
+            className="flex items-center px-4 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600 transition-colors"
           >
             Next Module
+            <ArrowRight size={20} className="ml-2" />
           </Link>
         )}
       </div>
       <div className="mt-4 text-center">
         <Link
           to={`/modulequiz/${id}`}
-          className="inline-block px-6 py-3 bg-gradient-to-r from-purple-500 to-indigo-600 text-white rounded-lg hover:from-purple-600 hover:to-indigo-700 transition-colors"
+          className="inline-block px-6 py-3 bg-green-500 text-white rounded-lg hover:bg-green-600 transition-colors"
         >
           Start Quiz
         </Link>
