@@ -172,7 +172,7 @@ const ModuleQuiz = () => {
                 to={`/learnfinance/${Number(id) + 1}`}
                 className="text-blue-500 hover:text-blue-700"
               >
-                Next Moduel
+                Next Module
               </Link>
             </>
           ) : (
