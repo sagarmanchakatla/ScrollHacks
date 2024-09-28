@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
-import { Link, useParams } from "react-router-dom"; // To get the module ID
+import { Link, useParams } from "react-router-dom";
+import ReactMarkdown from "react-markdown"; // Ensure correct import
 
 const financeTopics = [
   "Personal Finance Basics",
@@ -43,8 +44,8 @@ const financeTopics = [
 ];
 
 const TopicDescription = () => {
-  const { id } = useParams(); // Get the id from the route params
-  const topic = financeTopics[id]; // Get the topic based on id
+  const { id } = useParams();
+  const topic = financeTopics[id];
 
   const [description, setDescription] = useState({
     background: "",
@@ -53,10 +54,11 @@ const TopicDescription = () => {
     detailed_description: "",
     key_takeaways: "",
     conclusion: "",
-    links_for_further_study: "",
+    links_for_further_study: [],
   });
 
   useEffect(() => {
+    console.log(topic);
     const fetchData = async () => {
       try {
         const response = await fetch(
@@ -66,7 +68,7 @@ const TopicDescription = () => {
             headers: {
               "Content-Type": "application/json",
             },
-            body: JSON.stringify({ topic }), // Send topic as an object
+            body: JSON.stringify({ topic }),
           }
         );
 
@@ -75,7 +77,39 @@ const TopicDescription = () => {
         }
 
         const result = await response.json();
-        setDescription(result.financialAdvice); // Assuming the API sends back the description as `financialAdvice`
+
+        // Ensure that each field is a string
+        setDescription({
+          background:
+            typeof result.financialAdvice.background === "string"
+              ? result.financialAdvice.background
+              : "",
+          need:
+            typeof result.financialAdvice.need === "string"
+              ? result.financialAdvice.need
+              : "",
+          importance:
+            typeof result.financialAdvice.importance === "string"
+              ? result.financialAdvice.importance
+              : "",
+          detailed_description:
+            typeof result.financialAdvice.detailed_description === "string"
+              ? result.financialAdvice.detailed_description
+              : "",
+          key_takeaways:
+            typeof result.financialAdvice.key_takeaways === "string"
+              ? result.financialAdvice.key_takeaways
+              : "",
+          conclusion:
+            typeof result.financialAdvice.conclusion === "string"
+              ? result.financialAdvice.conclusion
+              : "",
+          links_for_further_study: Array.isArray(
+            result.financialAdvice.links_for_further_study
+          )
+            ? result.financialAdvice.links_for_further_study
+            : [],
+        });
       } catch (error) {
         console.error("Error fetching data:", error);
       }
@@ -86,41 +120,75 @@ const TopicDescription = () => {
   return (
     <div className="container mx-auto py-8">
       <h1 className="text-4xl font-bold text-center mb-8">{topic}</h1>
-      <p className="text-gray-600 text-lg mb-6">
-        <strong>Background:</strong> {description.background}
-      </p>
-      <p className="text-gray-600 text-lg mb-6">
-        <strong>Need:</strong> {description.need}
-      </p>
-      <p className="text-gray-600 text-lg mb-6">
-        <strong>Importance:</strong> {description.importance}
-      </p>
-      <p className="text-gray-600 text-lg mb-6">
-        <strong>Detailed Description:</strong>{" "}
-        {description.detailed_description}
-      </p>
-      <p className="text-gray-600 text-lg mb-6">
-        <strong>Key Takeaways:</strong> {description.key_takeaways}
-      </p>
-      <p className="text-gray-600 text-lg mb-6">
-        <strong>Conclusion:</strong> {description.conclusion}
-      </p>
-      <p className="text-gray-600 text-lg mb-6">
-        <strong>More Links:</strong> {description.links_for_further_study}
-      </p>
 
-      <Link
-        to={`/learnfinance/${Number(id) + 1}`} // Dynamic navigation based on topic index
-        className="text-blue-500 hover:text-blue-700"
-      >
-        Next module
-      </Link>
-      <Link
-        to={`/modulequiz/${id}`} // Dynamic navigation based on topic index
-        className="text-blue-500 hover:text-blue-700"
-      >
-        Start Quiz
-      </Link>
+      {/* Render each part of the description using Markdown */}
+      <div className="text-gray-600 text-lg mb-6">
+        <strong>Background:</strong>
+        <ReactMarkdown>{description.background}</ReactMarkdown>
+      </div>
+
+      <div className="text-gray-600 text-lg mb-6">
+        <strong>Need:</strong>
+        <ReactMarkdown>{description.need}</ReactMarkdown>
+      </div>
+
+      <div className="text-gray-600 text-lg mb-6">
+        <strong>Importance:</strong>
+        <ReactMarkdown>{description.importance}</ReactMarkdown>
+      </div>
+
+      <div className="text-gray-600 text-lg mb-6">
+        <strong>Detailed Description:</strong>
+        <ReactMarkdown>{description.detailed_description}</ReactMarkdown>
+      </div>
+
+      <div className="text-gray-600 text-lg mb-6">
+        <strong>Key Takeaways:</strong>
+        <ReactMarkdown>{description.key_takeaways}</ReactMarkdown>
+      </div>
+
+      <div className="text-gray-600 text-lg mb-6">
+        <strong>Conclusion:</strong>
+        <ReactMarkdown>{description.conclusion}</ReactMarkdown>
+      </div>
+
+      {/* Render links for further study as a list */}
+      {description.links_for_further_study.length > 0 && (
+        <div>
+          <strong>More Links for Study:</strong>
+          <ul className="list-disc ml-4">
+            {description.links_for_further_study.map((link, index) => (
+              <li key={index}>
+                <a
+                  href={link}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-blue-500 hover:text-blue-700"
+                >
+                  {link}
+                </a>
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
+
+      <div className="mt-8 flex justify-between">
+        {Number(id) + 1 < financeTopics.length && (
+          <Link
+            to={`/learnfinance/${Number(id) + 1}`}
+            className="text-blue-500 hover:text-blue-700"
+          >
+            Next Module
+          </Link>
+        )}
+        <Link
+          to={`/modulequiz/${id}`}
+          className="text-blue-500 hover:text-blue-700"
+        >
+          Start Quiz
+        </Link>
+      </div>
     </div>
   );
 };
