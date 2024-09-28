@@ -1,4 +1,4 @@
-export const health_insurance = [
+const health_insurance = [
   {
     name: "Aditya Birla Group Activ Health Plan",
     premium: "Rs. 8182*",
@@ -56,3 +56,5 @@ export const health_insurance = [
     link: "https://www.bajajallianz.com",
   },
 ];
+
+module.exports = health_insurance;

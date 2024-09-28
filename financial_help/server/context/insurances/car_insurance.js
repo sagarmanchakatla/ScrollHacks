@@ -1,4 +1,4 @@
-export const car_insurance = [
+const car_insurance = [
   {
     name: "Bajaj Allianz Car Insurance",
     premium: "Rs. 3031*",
@@ -41,4 +41,18 @@ export const car_insurance = [
       "Coverage for natural and man-made calamities. Cashless repairs at 6,500+ network garages. 15+ unique add-ons to choose from.",
     link: "https://www.tataaig.com",
   },
+  {
+    name: "ACKO General Insurance Four-Wheeler - Comprehensive Plan",
+    premium: "Rs. 2,762*",
+    coverage: "Comprehensive Car Insurance Plan",
+    link: "https://www.acko.com/car-insurance",
+  },
+  {
+    name: "Bajaj Allianz General Four-Wheeler Policy",
+    premium: "Rs. 3,031*",
+    coverage: "Comprehensive Car Insurance Plan",
+    link: "https://www.bajajallianz.com/car-insurance",
+  },
 ];
+
+module.exports = car_insurance;

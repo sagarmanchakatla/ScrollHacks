@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useParams, Link } from "react-router-dom";
-
+import Markdown from "react-markdown";
 const financeTopics = [
   "Personal Finance Basics",
   "Budgeting",
@@ -248,7 +248,9 @@ const ModuleQuiz = () => {
                   <h3 className="text-xl font-semibold mb-2 text-indigo-700">
                     Personalized Advice:
                   </h3>
-                  <p className="text-gray-700">{advice}</p>
+                  <p className="text-gray-700">
+                    <Markdown>{advice}</Markdown>
+                  </p>
                 </div>
               )}
             </div>

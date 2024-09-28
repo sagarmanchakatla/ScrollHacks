@@ -20,6 +20,11 @@ const Navbar = () => {
             Learn Finance
           </Link>
         </li>
+        <li>
+          <Link to="/insurance" className="hover:text-blue-300">
+            Insurance
+          </Link>
+        </li>
       </ul>
     </nav>
   );

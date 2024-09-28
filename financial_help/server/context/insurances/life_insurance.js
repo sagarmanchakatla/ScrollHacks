@@ -1,4 +1,4 @@
-export const life_insurance = [
+const life_insurance = [
   {
     name: "Life Insurance Corporation of India",
     premium: "N/A",
@@ -61,3 +61,5 @@ export const life_insurance = [
     link: "https://www.pnbmetlife.com/",
   },
 ];
+
+module.exports = life_insurance;

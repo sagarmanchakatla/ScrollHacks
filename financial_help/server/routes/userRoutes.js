@@ -3,6 +3,7 @@ const { createUser, getUser } = require("../controllers/userController");
 const { generateFinancialAdvice } = require("../controllers/financialhelp"); // Ensure this is imported
 const { getTopicDescription } = require("../controllers/getTopicDescription");
 const { getQuiz, getAdviceOnQuiz } = require("../controllers/getQuiz");
+const { getInsuranceInfo } = require("../controllers/getInsuranceInfo");
 
 const router = express.Router();
 
@@ -12,5 +13,6 @@ router.post("/generate-advice", generateFinancialAdvice); // Use the imported fu
 router.post("/generate-topic-description", getTopicDescription);
 router.post("/generate-quiz", getQuiz);
 router.post("/get-advice-on-quiz", getAdviceOnQuiz);
+router.post("/get-insurance-details", getInsuranceInfo);
 
 module.exports = router;
