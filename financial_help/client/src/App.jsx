@@ -7,6 +7,7 @@ import TopicDescription from "./components/LearnFinance/ModuleDescription/TopicD
 import ModuleQuiz from "./components/LearnFinance/ModuleQuiz/ModuleQuiz";
 import Navbar from "./components/Navbar/Navbar";
 import Insurance from "./components/Insurances/Insurance";
+import MySchemePortal from "./components/SchemaPortal/MySchemePortal";
 
 const App = () => {
   return (
@@ -19,6 +20,7 @@ const App = () => {
         {/* Add dynamic route */}
         <Route path="/modulequiz/:id" element={<ModuleQuiz />} />
         <Route path="/insurance" element={<Insurance />} />
+        <Route path="/yojna" element={<MySchemePortal />} />
       </Routes>
     </Router>
   );
