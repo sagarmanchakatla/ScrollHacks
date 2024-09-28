@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom"; // To get the module ID
-import { Link } from "react-router-dom";
+import { useParams, Link } from "react-router-dom";
 
 const financeTopics = [
   "Personal Finance Basics",
@@ -47,13 +46,18 @@ const ModuleQuiz = () => {
   const { id } = useParams();
   const topic = financeTopics[id];
   const [quizQuestions, setQuizQuestions] = useState([]);
+  const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [answers, setAnswers] = useState({});
   const [score, setScore] = useState(null);
   const [advice, setAdvice] = useState("");
+  const [showAdvice, setShowAdvice] = useState(false);
+  const [loading, setLoading] = useState(true);
+  const [timeLeft, setTimeLeft] = useState(300); // 5 minutes in seconds
 
   useEffect(() => {
     const fetchData = async () => {
       try {
+        setLoading(true);
         const response = await fetch(
           "http://localhost:8000/api/generate-quiz",
           {
@@ -70,16 +74,38 @@ const ModuleQuiz = () => {
         console.log("Quiz Questions:", data.quizQuestions);
       } catch (error) {
         console.error("Error fetching quiz questions:", error);
+      } finally {
+        setLoading(false);
       }
     };
     fetchData();
   }, [topic]);
 
-  const handleAnswerChange = (questionIndex, selectedOption) => {
+  useEffect(() => {
+    if (quizQuestions.length > 0 && timeLeft > 0) {
+      const timer = setInterval(() => {
+        setTimeLeft((prevTime) => prevTime - 1);
+      }, 1000);
+
+      return () => clearInterval(timer);
+    } else if (timeLeft === 0) {
+      handleSubmitQuiz();
+    }
+  }, [quizQuestions, timeLeft]);
+
+  const handleAnswerChange = (selectedOption) => {
     setAnswers({
       ...answers,
-      [questionIndex]: selectedOption,
+      [currentQuestionIndex]: selectedOption,
     });
+  };
+
+  const handleNextQuestion = () => {
+    if (currentQuestionIndex < quizQuestions.length - 1) {
+      setCurrentQuestionIndex(currentQuestionIndex + 1);
+    } else {
+      handleSubmitQuiz();
+    }
   };
 
   const handleSubmitQuiz = async () => {
@@ -98,7 +124,6 @@ const ModuleQuiz = () => {
     setScore(totalScore);
     console.log("Final Score:", totalScore);
 
-    // Get advice based on quiz performance
     try {
       const response = await fetch(
         "http://localhost:8000/api/get-advice-on-quiz",
@@ -122,68 +147,110 @@ const ModuleQuiz = () => {
     }
   };
 
+  const formatTime = (seconds) => {
+    const minutes = Math.floor(seconds / 60);
+    const remainingSeconds = seconds % 60;
+    return `${minutes}:${remainingSeconds < 10 ? "0" : ""}${remainingSeconds}`;
+  };
+
   return (
-    <div className="container mx-auto py-8">
-      <h1 className="text-4xl font-bold text-center mb-8">Quiz: {topic}</h1>
+    <div className="container mx-auto py-8 px-4 max-w-3xl">
+      <h1 className="text-4xl font-bold text-center mb-8 text-indigo-700">
+        {topic} Quiz
+      </h1>
 
-      {quizQuestions.length > 0 ? (
-        <form className="space-y-6">
-          {quizQuestions.map((question, index) => (
-            <div key={index} className="mb-4">
-              <h2 className="text-lg font-semibold mb-2">
-                {question.question}
-              </h2>
-              {question.options.map((option, optionIndex) => (
-                <label key={optionIndex} className="block mb-1">
-                  <input
-                    type="radio"
-                    name={`question-${index}`}
-                    value={optionIndex}
-                    checked={answers[index] === optionIndex}
-                    onChange={() => handleAnswerChange(index, optionIndex)}
-                  />
-                  {option}
-                </label>
-              ))}
-            </div>
-          ))}
-
-          <button
-            type="button"
-            onClick={handleSubmitQuiz}
-            className="bg-blue-500 text-white p-3 rounded-lg hover:bg-blue-600"
-          >
-            Submit Quiz
-          </button>
-        </form>
+      {loading ? (
+        <div className="flex justify-center items-center h-64">
+          <div className="animate-spin rounded-full h-16 w-16 border-t-2 border-b-2 border-indigo-500"></div>
+        </div>
       ) : (
-        <p>Loading quiz questions...</p>
-      )}
-
-      {score !== null && (
-        <div className="mt-6">
-          <h2 className="text-2xl font-bold">
-            Your Score: {score.toFixed(2)}%
-          </h2>
-          {score >= 50 ? (
+        <div className="bg-white shadow-lg rounded-lg p-6">
+          {score === null ? (
             <>
-              <p className="text-green-500">Great job! You passed the quiz.</p>
-              <Link
-                to={`/learnfinance/${Number(id) + 1}`}
-                className="text-blue-500 hover:text-blue-700"
+              <div className="mb-4 text-right">
+                <span className="text-lg font-semibold">
+                  Time Left: {formatTime(timeLeft)}
+                </span>
+              </div>
+              <div className="mb-6 p-4 bg-gray-50 rounded-lg">
+                <h2 className="text-lg font-semibold mb-3 text-gray-800">
+                  {currentQuestionIndex + 1}.{" "}
+                  {quizQuestions[currentQuestionIndex]?.question}
+                </h2>
+                <div className="space-y-2">
+                  {quizQuestions[currentQuestionIndex]?.options.map(
+                    (option, optionIndex) => (
+                      <label
+                        key={optionIndex}
+                        className="flex items-center space-x-3 p-2 rounded hover:bg-gray-200 transition-colors"
+                      >
+                        <input
+                          type="radio"
+                          name={`question-${currentQuestionIndex}`}
+                          value={optionIndex}
+                          checked={
+                            answers[currentQuestionIndex] === optionIndex
+                          }
+                          onChange={() => handleAnswerChange(optionIndex)}
+                          className="form-radio text-indigo-600 focus:ring-indigo-500"
+                        />
+                        <span className="text-gray-700">{option}</span>
+                      </label>
+                    )
+                  )}
+                </div>
+              </div>
+              <button
+                onClick={handleNextQuestion}
+                className="w-full bg-indigo-600 text-white p-3 rounded-lg hover:bg-indigo-700 transition-colors focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
               >
-                Next Module
-              </Link>
+                {currentQuestionIndex === quizQuestions.length - 1
+                  ? "Submit Quiz"
+                  : "Next Question"}
+              </button>
             </>
           ) : (
-            <p className="text-red-500">
-              You scored below 50%. Please review the material.
-            </p>
-          )}
-          {advice && (
-            <div className="mt-4">
-              <h3 className="text-xl font-semibold">Personalized Advice:</h3>
-              <p>{advice}</p>
+            <div className="text-center">
+              <h2 className="text-3xl font-bold mb-4">
+                Your Score:{" "}
+                <span
+                  className={score >= 50 ? "text-green-600" : "text-red-600"}
+                >
+                  {score.toFixed(2)}%
+                </span>
+              </h2>
+              {score >= 50 ? (
+                <>
+                  <p className="text-green-600 mb-4">
+                    Great job! You passed the quiz.
+                  </p>
+                  <Link
+                    to={`/learnfinance/${Number(id) + 1}`}
+                    className="inline-block bg-indigo-600 text-white px-4 py-2 rounded-lg hover:bg-indigo-700 transition-colors"
+                  >
+                    Next Module
+                  </Link>
+                </>
+              ) : (
+                <p className="text-red-600 mb-4">
+                  You scored below 50%. Please review the material and try
+                  again.
+                </p>
+              )}
+              <button
+                onClick={() => setShowAdvice(!showAdvice)}
+                className="mt-4 bg-green-500 text-white px-4 py-2 rounded-lg hover:bg-green-600 transition-colors"
+              >
+                {showAdvice ? "Hide Advice" : "Show Advice"}
+              </button>
+              {showAdvice && advice && (
+                <div className="mt-6 p-4 bg-gray-50 rounded-lg text-left">
+                  <h3 className="text-xl font-semibold mb-2 text-indigo-700">
+                    Personalized Advice:
+                  </h3>
+                  <p className="text-gray-700">{advice}</p>
+                </div>
+              )}
             </div>
           )}
         </div>

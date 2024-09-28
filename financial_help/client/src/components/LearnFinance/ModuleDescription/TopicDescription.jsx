@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
-import ReactMarkdown from "react-markdown"; // Ensure correct import
+import ReactMarkdown from "react-markdown";
+import { ChevronDown, ChevronUp, Book, Link as LinkIcon } from "lucide-react";
 
 const financeTopics = [
   "Personal Finance Basics",
@@ -46,7 +47,6 @@ const financeTopics = [
 const TopicDescription = () => {
   const { id } = useParams();
   const topic = financeTopics[id];
-
   const [description, setDescription] = useState({
     background: "",
     need: "",
@@ -56,9 +56,9 @@ const TopicDescription = () => {
     conclusion: "",
     links_for_further_study: [],
   });
+  const [expandedSections, setExpandedSections] = useState({});
 
   useEffect(() => {
-    console.log(topic);
     const fetchData = async () => {
       try {
         const response = await fetch(
@@ -78,32 +78,14 @@ const TopicDescription = () => {
 
         const result = await response.json();
 
-        // Ensure that each field is a string
         setDescription({
-          background:
-            typeof result.financialAdvice.background === "string"
-              ? result.financialAdvice.background
-              : "",
-          need:
-            typeof result.financialAdvice.need === "string"
-              ? result.financialAdvice.need
-              : "",
-          importance:
-            typeof result.financialAdvice.importance === "string"
-              ? result.financialAdvice.importance
-              : "",
+          background: result.financialAdvice.background || "",
+          need: result.financialAdvice.need || "",
+          importance: result.financialAdvice.importance || "",
           detailed_description:
-            typeof result.financialAdvice.detailed_description === "string"
-              ? result.financialAdvice.detailed_description
-              : "",
-          key_takeaways:
-            typeof result.financialAdvice.key_takeaways === "string"
-              ? result.financialAdvice.key_takeaways
-              : "",
-          conclusion:
-            typeof result.financialAdvice.conclusion === "string"
-              ? result.financialAdvice.conclusion
-              : "",
+            result.financialAdvice.detailed_description || "",
+          key_takeaways: result.financialAdvice.key_takeaways || "",
+          conclusion: result.financialAdvice.conclusion || "",
           links_for_further_study: Array.isArray(
             result.financialAdvice.links_for_further_study
           )
@@ -117,74 +99,114 @@ const TopicDescription = () => {
     fetchData();
   }, [topic]);
 
+  const toggleSection = (section) => {
+    setExpandedSections((prev) => ({ ...prev, [section]: !prev[section] }));
+  };
+
+  const renderSection = (title, content, icon) => (
+    <div className="mb-6 bg-white rounded-lg shadow-md overflow-hidden">
+      <button
+        onClick={() => toggleSection(title)}
+        className="w-full px-6 py-4 flex justify-between items-center bg-gradient-to-r from-purple-500 to-indigo-600 text-white"
+      >
+        <div className="flex items-center">
+          {icon}
+          <span className="ml-2 font-semibold">{title}</span>
+        </div>
+        {expandedSections[title] ? (
+          <ChevronUp size={20} />
+        ) : (
+          <ChevronDown size={20} />
+        )}
+      </button>
+      {expandedSections[title] && (
+        <div className="px-6 py-4 bg-gray-50">
+          <ReactMarkdown className="prose max-w-none">{content}</ReactMarkdown>
+        </div>
+      )}
+    </div>
+  );
+
   return (
-    <div className="container mx-auto py-8">
-      <h1 className="text-4xl font-bold text-center mb-8">{topic}</h1>
+    <div className="container mx-auto py-8 px-4 max-w-4xl">
+      <h1 className="text-4xl font-bold text-center mb-8 text-transparent bg-clip-text bg-gradient-to-r from-purple-600 to-indigo-600">
+        {topic}
+      </h1>
 
-      {/* Render each part of the description using Markdown */}
-      <div className="text-gray-600 text-lg mb-6">
-        <strong>Background:</strong>
-        <ReactMarkdown>{description.background}</ReactMarkdown>
-      </div>
+      {renderSection("Background", description.background, <Book size={20} />)}
+      {renderSection("Need", description.need, <Book size={20} />)}
+      {renderSection("Importance", description.importance, <Book size={20} />)}
+      {renderSection(
+        "Detailed Description",
+        description.detailed_description,
+        <Book size={20} />
+      )}
+      {renderSection(
+        "Key Takeaways",
+        description.key_takeaways,
+        <Book size={20} />
+      )}
+      {renderSection("Conclusion", description.conclusion, <Book size={20} />)}
 
-      <div className="text-gray-600 text-lg mb-6">
-        <strong>Need:</strong>
-        <ReactMarkdown>{description.need}</ReactMarkdown>
-      </div>
-
-      <div className="text-gray-600 text-lg mb-6">
-        <strong>Importance:</strong>
-        <ReactMarkdown>{description.importance}</ReactMarkdown>
-      </div>
-
-      <div className="text-gray-600 text-lg mb-6">
-        <strong>Detailed Description:</strong>
-        <ReactMarkdown>{description.detailed_description}</ReactMarkdown>
-      </div>
-
-      <div className="text-gray-600 text-lg mb-6">
-        <strong>Key Takeaways:</strong>
-        <ReactMarkdown>{description.key_takeaways}</ReactMarkdown>
-      </div>
-
-      <div className="text-gray-600 text-lg mb-6">
-        <strong>Conclusion:</strong>
-        <ReactMarkdown>{description.conclusion}</ReactMarkdown>
-      </div>
-
-      {/* Render links for further study as a list */}
       {description.links_for_further_study.length > 0 && (
-        <div>
-          <strong>More Links for Study:</strong>
-          <ul className="list-disc ml-4">
-            {description.links_for_further_study.map((link, index) => (
-              <li key={index}>
-                <a
-                  href={link}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-blue-500 hover:text-blue-700"
-                >
-                  {link}
-                </a>
-              </li>
-            ))}
-          </ul>
+        <div className="mb-6 bg-white rounded-lg shadow-md overflow-hidden">
+          <button
+            onClick={() => toggleSection("Further Study")}
+            className="w-full px-6 py-4 flex justify-between items-center bg-gradient-to-r from-purple-500 to-indigo-600 text-white"
+          >
+            <div className="flex items-center">
+              <LinkIcon size={20} />
+              <span className="ml-2 font-semibold">Further Study</span>
+            </div>
+            {expandedSections["Further Study"] ? (
+              <ChevronUp size={20} />
+            ) : (
+              <ChevronDown size={20} />
+            )}
+          </button>
+          {expandedSections["Further Study"] && (
+            <div className="px-6 py-4 bg-gray-50">
+              <ul className="list-disc ml-4">
+                {description.links_for_further_study.map((link, index) => (
+                  <li key={index} className="mb-2">
+                    <a
+                      href={link}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-blue-600 hover:text-blue-800 underline"
+                    >
+                      {link}
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
         </div>
       )}
 
       <div className="mt-8 flex justify-between">
+        {Number(id) > 0 && (
+          <Link
+            to={`/learnfinance/${Number(id) - 1}`}
+            className="px-4 py-2 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300 transition-colors"
+          >
+            Previous Module
+          </Link>
+        )}
         {Number(id) + 1 < financeTopics.length && (
           <Link
             to={`/learnfinance/${Number(id) + 1}`}
-            className="text-blue-500 hover:text-blue-700"
+            className="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors"
           >
             Next Module
           </Link>
         )}
+      </div>
+      <div className="mt-4 text-center">
         <Link
           to={`/modulequiz/${id}`}
-          className="text-blue-500 hover:text-blue-700"
+          className="inline-block px-6 py-3 bg-gradient-to-r from-purple-500 to-indigo-600 text-white rounded-lg hover:from-purple-600 hover:to-indigo-700 transition-colors"
         >
           Start Quiz
         </Link>
