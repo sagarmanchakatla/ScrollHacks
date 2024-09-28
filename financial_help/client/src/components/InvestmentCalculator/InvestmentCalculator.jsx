@@ -225,7 +225,7 @@ const InvestmentCalculator = () => {
         </DialogPrimitive.Root>
 
         <h1 className="text-3xl font-bold mb-8 text-blue-900">
-          Investment Returns Calculator (in Rupees)
+          Investment Returns Calculator
         </h1>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
           <motion.div
