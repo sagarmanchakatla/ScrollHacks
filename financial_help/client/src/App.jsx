@@ -8,6 +8,7 @@ import ModuleQuiz from "./components/LearnFinance/ModuleQuiz/ModuleQuiz";
 import Navbar from "./components/Navbar/Navbar";
 import Insurance from "./components/Insurances/Insurance";
 import MySchemePortal from "./components/SchemaPortal/MySchemePortal";
+import InvestmentCalculator from "./components/InvestmentCalculator/InvestmentCalculator";
 
 const App = () => {
   return (
@@ -21,6 +22,10 @@ const App = () => {
         <Route path="/modulequiz/:id" element={<ModuleQuiz />} />
         <Route path="/insurance" element={<Insurance />} />
         <Route path="/yojna" element={<MySchemePortal />} />
+        <Route
+          path="/investment-calculator"
+          element={<InvestmentCalculator />}
+        ></Route>
       </Routes>
     </Router>
   );

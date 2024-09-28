@@ -30,11 +30,12 @@ exports.processQuestion = async (req, res) => {
     // Use Gemini AI to process the question and website summary
     const result = await model.generateContent(prompt);
     const aiResponse = result.response.text();
+    console.log("Raw AI response:", aiResponse);
 
     // Clean the AI response, ensuring it's safe for JSON if necessary
-    const cleanedResponse = aiResponse.replace(/```json|```/g, "").trim();
+    // const cleanedResponse = aiResponse.replace(/```json|```/g, "").trim();
 
-    return res.status(200).json({ answer: cleanedResponse });
+    return res.status(200).json({ answer: aiResponse });
   } catch (error) {
     console.error("Error:", error.message);
     return res
