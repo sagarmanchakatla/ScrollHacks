@@ -115,6 +115,12 @@ const TopicDescription = () => {
       >
         Next module
       </Link>
+      <Link
+        to={`/modulequiz/${id}`} // Dynamic navigation based on topic index
+        className="text-blue-500 hover:text-blue-700"
+      >
+        Start Quiz
+      </Link>
     </div>
   );
 };

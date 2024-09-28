@@ -1,4 +1,7 @@
 import { useState } from "react";
+// import Markdown from "./Markdown";
+
+import Markdown from "react-markdown";
 
 const FinancialForm = () => {
   const [formData, setFormData] = useState({
@@ -143,7 +146,10 @@ const FinancialForm = () => {
             <h3 className="text-xl font-bold mb-4">
               Generated Financial Advice
             </h3>
-            <p className="mb-6">{advice}</p>
+            <p className="mb-6">
+              <Markdown>{advice}</Markdown>
+            </p>
+
             <button
               onClick={closeModal}
               className="absolute top-3 right-3 text-gray-500 hover:text-gray-800 focus:outline-none"
