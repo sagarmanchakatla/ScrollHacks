@@ -48,7 +48,7 @@ const Sidebar = ({ isOpen, toggleSidebar }) => {
         {isOpen && (
           <>
             <DollarSign size={32} className="text-purple-600" />
-            <span className="text-xl font-bold text-gray-800">FinPlanPro</span>
+            <span className="text-xl font-bold text-gray-800">Fin-Lit</span>
           </>
         )}
         <button

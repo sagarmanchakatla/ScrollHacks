@@ -6,7 +6,7 @@ const Navbar = ({ toggleSidebar }) => {
     <nav className="bg-white shadow-md py-4 md:px-20 flex justify-between items-center">
       <div className="flex items-center space-x-2">
         <DollarSign size={32} className="text-purple-600" />
-        <span className="text-xl font-bold text-gray-800">FinPlanPro</span>
+        <span className="text-xl font-bold text-gray-800">Fin-Lit</span>
       </div>
       <button
         onClick={toggleSidebar}
