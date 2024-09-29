@@ -1,0 +1,19 @@
+body {
+    font-family: 'Poppins', sans-serif;
+}
+
+.bg-gray-100 {
+    background-color: #f7fafc; /* Light gray background */
+}
+
+.border {
+    border: 1px solid #e2e8f0; /* Border color */
+}
+
+.rounded {
+    border-radius: 0.5rem; /* Rounded corners */
+}
+
+.hover\:bg-gray-200:hover {
+    background-color: #edf2f7; /* Light gray on hover */
+}
