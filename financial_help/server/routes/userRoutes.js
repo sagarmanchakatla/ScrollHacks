@@ -5,6 +5,13 @@ const { getTopicDescription } = require("../controllers/getTopicDescription");
 const { getQuiz, getAdviceOnQuiz } = require("../controllers/getQuiz");
 const { getInsuranceInfo } = require("../controllers/getInsuranceInfo");
 const { processQuestion } = require("../controllers/processQuestion");
+const {
+  sendEmail,
+  rejectProposal,
+  acceptProposal,
+} = require("../controllers/senEmail");
+const { editProposal } = require("../controllers/editProposal");
+const { generateBusinessModel } = require("../controllers/proposal");
 
 const router = express.Router();
 
@@ -16,6 +23,12 @@ router.post("/generate-quiz", getQuiz);
 router.post("/get-advice-on-quiz", getAdviceOnQuiz);
 router.post("/get-insurance-details", getInsuranceInfo);
 router.post("/process", processQuestion);
+
+router.post("/generate-proposal", generateBusinessModel);
+router.post("/edit-proposal", editProposal);
+router.post("/send-email", sendEmail);
+router.get("/reject-proposal", rejectProposal);
+router.get("/accept-proposal", acceptProposal);
 
 const calculateInvestment = (
   initialAmount,

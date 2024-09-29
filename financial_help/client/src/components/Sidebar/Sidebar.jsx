@@ -7,6 +7,9 @@ import {
   Umbrella,
   FileText,
   Calculator,
+  Briefcase,
+  Users,
+  Calendar,
   ChevronRight,
   ChevronLeft,
   X,
@@ -15,6 +18,7 @@ import {
 const Sidebar = ({ isOpen, toggleSidebar }) => {
   const location = useLocation();
 
+  // Add new routes to the navItems array
   const navItems = [
     { icon: Home, label: "Home", to: "/" },
     { icon: DollarSign, label: "Financial Help", to: "/financialhelp" },
@@ -26,6 +30,10 @@ const Sidebar = ({ isOpen, toggleSidebar }) => {
       label: "Investment Calculator",
       to: "/investment-calculator",
     },
+    // New Routes
+    { icon: Briefcase, label: "Business Proposal", to: "/businessProposal" },
+    { icon: Users, label: "Investors", to: "/investor" },
+    { icon: Calendar, label: "Accept Proposal", to: "/accept-proposal" },
   ];
 
   return (

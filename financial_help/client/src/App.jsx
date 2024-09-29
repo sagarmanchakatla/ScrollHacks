@@ -11,6 +11,9 @@ import Insurance from "./components/Insurances/Insurance";
 import MySchemePortal from "./components/SchemaPortal/MySchemePortal";
 import InvestmentCalculator from "./components/InvestmentCalculator/InvestmentCalculator";
 import Dashboard from "./components/FinantialHelp/Dashboard";
+import BusinessProposal from "./components/businessProposal/proposal"; // Import the new component
+import InvestorsPage from "./components/investor/investor"; // Import the new component
+import Calendar from "./components/calender/calender";
 
 const App = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
@@ -42,6 +45,11 @@ const App = () => {
                 path="/investment-calculator"
                 element={<InvestmentCalculator />}
               />
+              <Route path="/businessProposal" element={<BusinessProposal />} />
+              <Route path="/investor" element={<InvestorsPage />} />
+
+              {/* Calendar route */}
+              <Route path="/accept-proposal" element={<Calendar />} />
             </Routes>
           </main>
         </div>
