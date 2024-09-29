@@ -15,7 +15,7 @@ export default defineConfig({
       ], // Icons and assets
       manifest: {
         name: "FinPlanPro", // Name of the app
-        short_name: "Learn about finance with AI", // Short name for the app
+        short_name: "FinPlanPro", // Short name for the app
         description: "Help with financial planning",
         theme_color: "#ffffff", // Theme color
         background_color: "#ffffff", // Background color
