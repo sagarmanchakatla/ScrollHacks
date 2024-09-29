@@ -52,13 +52,14 @@ const LearnFinance = () => {
   );
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-100 to-blue-200 py-12 px-4">
+    <div className="min-h-screen  bg-blue-50 py-12 px-4">
       <div className="container mx-auto">
         <h1 className="text-5xl font-bold text-center mb-8 text-blue-900">
           Finance Learning Hub
         </h1>
         <p className="text-xl text-center mb-12 text-blue-700">
-          Dive into our comprehensive modules to enhance your financial expertise
+          Dive into our comprehensive modules to enhance your financial
+          expertise
         </p>
 
         <div className="relative mb-8">
@@ -69,7 +70,10 @@ const LearnFinance = () => {
             onChange={(e) => setSearchTerm(e.target.value)}
             className="w-full py-3 px-4 pl-12 rounded-full border-2 border-blue-300 focus:border-blue-500 focus:outline-none text-lg bg-white bg-opacity-80"
           />
-          <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 text-blue-400" size={20} />
+          <Search
+            className="absolute left-4 top-1/2 transform -translate-y-1/2 text-blue-400"
+            size={20}
+          />
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
@@ -85,7 +89,8 @@ const LearnFinance = () => {
                 {topic}
               </h2>
               <p className="text-blue-600 mb-6">
-                Master the essentials of {topic.toLowerCase()} and boost your financial acumen.
+                Master the essentials of {topic.toLowerCase()} and boost your
+                financial acumen.
               </p>
               <div className="flex justify-between items-center mt-4">
                 <Link
@@ -94,7 +99,10 @@ const LearnFinance = () => {
                 >
                   <Book size={18} className="mr-2" />
                   <span>Start Learning</span>
-                  <ChevronRight size={18} className="ml-1 opacity-0 group-hover:opacity-100 transition-opacity" />
+                  <ChevronRight
+                    size={18}
+                    className="ml-1 opacity-0 group-hover:opacity-100 transition-opacity"
+                  />
                 </Link>
                 <button className="flex items-center text-blue-500 hover:text-blue-700 transition-colors">
                   <Video size={18} className="mr-2" />
