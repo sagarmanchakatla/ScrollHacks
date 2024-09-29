@@ -73,7 +73,7 @@
 //     setIsLoading(true);
 //     try {
 //       const response = await fetch(
-//         "http://localhost:8000/api/generate-advice",
+//         "https://scrollhacks-fkqq.onrender.com/api/generate-advice",
 //         {
 //           method: "POST",
 //           headers: { "Content-Type": "application/json" },
@@ -449,11 +449,21 @@
 
 // export default FinancialForm;
 
-
 import React, { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { ChevronRight, ChevronLeft, DollarSign, Briefcase, Target, Shield, CreditCard, PiggyBank,Download,X } from "lucide-react";
-import Markdown from 'react-markdown'
+import {
+  ChevronRight,
+  ChevronLeft,
+  DollarSign,
+  Briefcase,
+  Target,
+  Shield,
+  CreditCard,
+  PiggyBank,
+  Download,
+  X,
+} from "lucide-react";
+import Markdown from "react-markdown";
 const Button = ({ children, ...props }) => (
   <button
     className="px-6 py-3 bg-gradient-to-r from-blue-500 to-purple-600 text-white rounded-full font-semibold shadow-lg hover:shadow-xl transition duration-300 transform hover:-translate-y-1"
@@ -496,6 +506,7 @@ const FinancialForm = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [financialPlan, setFinancialPlan] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [formCompleted, setFormCompleted] = useState(false);
 
   const openModal = () => setIsModalOpen(true);
   const closeModal = () => setIsModalOpen(false);
@@ -511,28 +522,6 @@ const FinancialForm = () => {
     document.body.removeChild(a);
     URL.revokeObjectURL(url);
   };
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    setIsLoading(true);
-    try {
-        const response = await fetch("http://localhost:8000/api/generate-advice", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(formData),
-        });
-
-        if (!response.ok) throw new Error(`Error: ${response.status}`);
-
-        const { financialAdvice } = await response.json();
-        console.log("Financial advice received:", financialAdvice); // Add this line
-        setFinancialPlan(financialAdvice);
-    } catch (error) {
-        console.error("Error submitting data:", error.message);
-        alert("An error occurred while generating your financial plan. Please try again.");
-    } finally {
-        setIsLoading(false);
-    }
-};
 
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
@@ -551,11 +540,38 @@ const FinancialForm = () => {
     }
   };
 
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setIsLoading(true);
+    try {
+      const response = await fetch(
+        "https://scrollhacks-fkqq.onrender.com/api/generate-advice",
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(formData),
+        }
+      );
+
+      if (!response.ok) throw new Error(`Error: ${response.status}`);
+
+      const { financialAdvice } = await response.json();
+      console.log("Financial advice received:", financialAdvice);
+      setFinancialPlan(financialAdvice);
+    } catch (error) {
+      console.error("Error submitting data:", error.message);
+      alert(
+        "An error occurred while generating your financial plan. Please try again."
+      );
+    } finally {
+      setIsLoading(false);
+    }
+  };
   // const handleSubmit = async (e) => {
   //   e.preventDefault();
   //   setIsLoading(true);
   //   try {
-  //     const response = await fetch("http://localhost:8000/api/generate-advice", {
+  //     const response = await fetch("https://scrollhacks-fkqq.onrender.com/api/generate-advice", {
   //       method: "POST",
   //       headers: { "Content-Type": "application/json" },
   //       body: JSON.stringify(formData),
@@ -578,37 +594,82 @@ const FinancialForm = () => {
       title: "Personal Information",
       icon: <Shield className="w-12 h-12 text-purple-500" />,
       fields: [
-        { name: "name", label: "Full Name", type: "text", placeholder: "e.g. John Doe" },
+        {
+          name: "name",
+          label: "Full Name",
+          type: "text",
+          placeholder: "e.g. John Doe",
+        },
         { name: "age", label: "Age", type: "number", placeholder: "e.g. 30" },
-        { name: "location", label: "Location", type: "text", placeholder: "e.g. New York, USA" },
+        {
+          name: "location",
+          label: "Location",
+          type: "text",
+          placeholder: "e.g. New York, USA",
+        },
       ],
     },
     {
       title: "Career Information",
       icon: <Briefcase className="w-12 h-12 text-blue-500" />,
       fields: [
-        { name: "occupation", label: "Occupation", type: "text", placeholder: "e.g. Software Engineer" },
-        { name: "industry", label: "Industry", type: "text", placeholder: "e.g. Technology" },
+        {
+          name: "occupation",
+          label: "Occupation",
+          type: "text",
+          placeholder: "e.g. Software Engineer",
+        },
+        {
+          name: "industry",
+          label: "Industry",
+          type: "text",
+          placeholder: "e.g. Technology",
+        },
       ],
     },
     {
       title: "Financial Snapshot",
       icon: <DollarSign className="w-12 h-12 text-green-500" />,
       fields: [
-        { name: "annualIncome", label: "Annual Income", type: "number", placeholder: "e.g. 75000" },
-        { name: "monthlySpendings", label: "Monthly Spendings", type: "number", placeholder: "e.g. 3000" },
-        { name: "savings", label: "Total Savings", type: "number", placeholder: "e.g. 20000" },
-        { name: "investments", label: "Total Investments", type: "number", placeholder: "e.g. 50000" },
-        { name: "debts", label: "Total Debts", type: "number", placeholder: "e.g. 10000" },
+        {
+          name: "annualIncome",
+          label: "Annual Income",
+          type: "number",
+          placeholder: "e.g. 75000",
+        },
+        {
+          name: "monthlySpendings",
+          label: "Monthly Spendings",
+          type: "number",
+          placeholder: "e.g. 3000",
+        },
+        {
+          name: "savings",
+          label: "Total Savings",
+          type: "number",
+          placeholder: "e.g. 20000",
+        },
+        {
+          name: "investments",
+          label: "Total Investments",
+          type: "number",
+          placeholder: "e.g. 50000",
+        },
+        {
+          name: "debts",
+          label: "Total Debts",
+          type: "number",
+          placeholder: "e.g. 10000",
+        },
       ],
     },
     {
       title: "EMI Information",
       icon: <CreditCard className="w-12 h-12 text-red-500" />,
       fields: [
-        { 
-          name: "emiTypes", 
-          label: "EMI Types", 
+        {
+          name: "emiTypes",
+          label: "EMI Types",
           type: "checkbox",
           options: [
             { value: "homeLoan", label: "Home Loan" },
@@ -617,22 +678,38 @@ const FinancialForm = () => {
             { value: "educationLoan", label: "Education Loan" },
           ],
         },
-        { name: "totalEMI", label: "Total Monthly EMI", type: "number", placeholder: "e.g. 1000" },
+        {
+          name: "totalEMI",
+          label: "Total Monthly EMI",
+          type: "number",
+          placeholder: "e.g. 1000",
+        },
       ],
     },
     {
       title: "Financial Goals",
       icon: <Target className="w-12 h-12 text-yellow-500" />,
       fields: [
-        { name: "financialGoal", label: "Primary Financial Goal", type: "text", placeholder: "e.g. Buy a house in 5 years" },
-        { 
-          name: "riskLevel", 
-          label: "Risk Tolerance", 
+        {
+          name: "financialGoal",
+          label: "Primary Financial Goal",
+          type: "text",
+          placeholder: "e.g. Buy a house in 5 years",
+        },
+        {
+          name: "riskLevel",
+          label: "Risk Tolerance",
           type: "select",
           options: [
             { value: "low", label: "Low - I prefer stability" },
-            { value: "medium", label: "Medium - I'm comfortable with some risk" },
-            { value: "high", label: "High - I'm willing to take risks for higher returns" },
+            {
+              value: "medium",
+              label: "Medium - I'm comfortable with some risk",
+            },
+            {
+              value: "high",
+              label: "High - I'm willing to take risks for higher returns",
+            },
           ],
         },
       ],
@@ -643,7 +720,7 @@ const FinancialForm = () => {
     <div className="max-w-4xl mx-auto my-16 px-4">
       {!financialPlan ? (
         <Card>
-          <form onSubmit={handleSubmit} className="space-y-8">
+          <form onSubmit={(e) => e.preventDefault()} className="space-y-8">
             <AnimatePresence mode="wait">
               <motion.div
                 key={currentStep}
@@ -654,12 +731,16 @@ const FinancialForm = () => {
               >
                 <div className="flex items-center space-x-4 mb-8">
                   {formSections[currentStep].icon}
-                  <h2 className="text-3xl font-bold text-gray-800">{formSections[currentStep].title}</h2>
+                  <h2 className="text-3xl font-bold text-gray-800">
+                    {formSections[currentStep].title}
+                  </h2>
                 </div>
                 <div className="space-y-6">
                   {formSections[currentStep].fields.map((field) => (
                     <div key={field.name} className="space-y-2">
-                      <label className="block text-xl font-medium text-gray-700">{field.label}</label>
+                      <label className="block text-xl font-medium text-gray-700">
+                        {field.label}
+                      </label>
                       {field.type === "select" ? (
                         <select
                           name={field.name}
@@ -677,11 +758,16 @@ const FinancialForm = () => {
                       ) : field.type === "checkbox" ? (
                         <div className="space-y-2">
                           {field.options.map((option) => (
-                            <label key={option.value} className="flex items-center space-x-2">
+                            <label
+                              key={option.value}
+                              className="flex items-center space-x-2"
+                            >
                               <input
                                 type="checkbox"
                                 name={option.value}
-                                checked={formData.emiTypes.includes(option.value)}
+                                checked={formData.emiTypes.includes(
+                                  option.value
+                                )}
                                 onChange={handleChange}
                                 className="rounded text-purple-600 focus:ring-purple-500 w-5 h-5"
                               />
@@ -716,24 +802,30 @@ const FinancialForm = () => {
               {currentStep < formSections.length - 1 ? (
                 <Button
                   type="button"
-                  onClick={() => setCurrentStep(currentStep + 1)}
+                  onClick={() => {
+                    setCurrentStep(currentStep + 1);
+                    if (currentStep === formSections.length - 2) {
+                      setFormCompleted(true);
+                    }
+                  }}
                   className="flex items-center gap-2"
                 >
                   Next <ChevronRight />
                 </Button>
               ) : (
                 <Button
-                  type="submit"
-                  disabled={isLoading}
+                  type="button"
+                  onClick={handleSubmit}
+                  disabled={isLoading || !formCompleted}
                   className="flex items-center gap-2"
                 >
-                  {isLoading ? "Generating Plan..." : "Get Your Financial Plan"}
+                  {isLoading ? "Generating Plan..." : "Generate Financial Plan"}
                 </Button>
               )}
             </div>
           </form>
         </Card>
-      ) :  (
+      ) : (
         <motion.div
           initial={{ opacity: 0, y: 50 }}
           animate={{ opacity: 1, y: 0 }}
@@ -742,24 +834,34 @@ const FinancialForm = () => {
           <Card>
             <div className="flex items-center space-x-4 mb-8">
               <PiggyBank className="w-12 h-12 text-green-500" />
-              <h2 className="text-3xl font-bold text-gray-800">Your Personalized Financial Plan</h2>
+              <h2 className="text-3xl font-bold text-gray-800">
+                Your Personalized Financial Plan
+              </h2>
             </div>
             <p className="text-lg text-gray-600 mb-6">
-              Your financial plan is ready! Click the button below to view the detailed plan.
+              Your financial plan is ready! Click the button below to view the
+              detailed plan.
             </p>
             <div className="flex space-x-4">
-              <Button onClick={openModal} className="flex items-center gap-2">
+              <Button
+                onClick={openModal}
+                className="flex items-center gap-2 bg-blue-500 text-white px-4 py-2 rounded-lg shadow-md hover:bg-blue-600 transition-colors duration-300 hover:shadow-lg focus:ring-2 focus:ring-blue-400 focus:ring-offset-2"
+              >
                 <Target className="w-5 h-5" /> View Full Plan
               </Button>
-              <Button onClick={handleDownload} className="flex items-center gap-2 bg-green-500 hover:bg-green-600">
+              <Button
+                onClick={handleDownload}
+                className="flex items-center gap-2 bg-green-500 text-white px-4 py-2 rounded-lg shadow-md hover:bg-green-600 transition-colors duration-300 hover:shadow-lg focus:ring-2 focus:ring-green-400 focus:ring-offset-2"
+              >
                 <Download className="w-5 h-5" /> Download Plan
               </Button>
               <Button
                 onClick={() => {
                   setFinancialPlan(null);
                   setCurrentStep(0);
+                  setFormCompleted(false);
                 }}
-                className="flex items-center gap-2 bg-gray-500 hover:bg-gray-600"
+                className="flex items-center gap-2 bg-gray-500 text-white px-4 py-2 rounded-lg shadow-md hover:bg-gray-600 transition-colors duration-300 hover:shadow-lg focus:ring-2 focus:ring-gray-400 focus:ring-offset-2"
               >
                 <X className="w-5 h-5" /> Start Over
               </Button>
@@ -768,74 +870,44 @@ const FinancialForm = () => {
         </motion.div>
       )}
 
-<AnimatePresence>
-  {isModalOpen && (
-    <motion.div
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      exit={{ opacity: 0 }}
-      className="fixed inset-0 flex items-center justify-center z-50 bg-black bg-opacity-50 p-4"
-    >
-      <motion.div
-        initial={{ scale: 0.9, opacity: 0 }}
-        animate={{ scale: 1, opacity: 1 }}
-        exit={{ scale: 0.9, opacity: 0 }}
-        className="bg-white rounded-lg shadow-lg w-full max-w-4xl max-h-[90vh] overflow-hidden flex flex-col"
-      >
-        <div className="p-6 bg-gradient-to-r from-blue-500 to-purple-600 text-white">
-          <h3 className="text-2xl font-bold">
-            Your Personalized Financial Advice
-          </h3>
-        </div>
-        <div className="p-6 overflow-y-auto flex-grow">
-          <div className="prose prose-lg max-w-none">
-            <Markdown
-              components={{
-                h1: ({ node, ...props }) => (
-                  <h1 className="text-3xl font-bold mb-4 text-blue-600" {...props} />
-                ),
-                h2: ({ node, ...props }) => (
-                  <h2 className="text-2xl font-semibold mt-6 mb-3 text-purple-600" {...props} />
-                ),
-                h3: ({ node, ...props }) => (
-                  <h3 className="text-xl font-semibold mt-5 mb-2 text-gray-800" {...props} />
-                ),
-                p: ({ node, ...props }) => (
-                  <p className="mb-4 text-gray-700 leading-relaxed" {...props} />
-                ),
-                ul: ({ node, ...props }) => (
-                  <ul className="list-disc pl-5 mb-4 text-gray-700" {...props} />
-                ),
-                ol: ({ node, ...props }) => (
-                  <ol className="list-decimal pl-5 mb-4 text-gray-700" {...props} />
-                ),
-                li: ({ node, ...props }) => (
-                  <li className="mb-2" {...props} />
-                ),
-                blockquote: ({ node, ...props }) => (
-                  <blockquote className="border-l-4 border-purple-500 pl-4 italic text-gray-600 mb-4" {...props} />
-                ),
-              }}
-            >
-              {financialPlan}
-            </Markdown>
-          </div>
-        </div>
-        <div className="p-4 bg-gray-100 flex justify-end">
-          <motion.button
-            onClick={closeModal}
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-            className="px-4 py-2 bg-gradient-to-r from-blue-500 to-purple-600 text-white rounded-lg hover:from-blue-600 hover:to-purple-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-colors duration-300"
+      <AnimatePresence>
+        {isModalOpen && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 flex items-center justify-center z-50 bg-black bg-opacity-50 p-4"
           >
-            Close
-          </motion.button>
-        </div>
-      </motion.div>
-    </motion.div>
-  )}
-</AnimatePresence>
-
+            <motion.div
+              initial={{ scale: 0.9, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0.9, opacity: 0 }}
+              className="bg-white rounded-lg shadow-lg w-full max-w-4xl max-h-[90vh] overflow-hidden flex flex-col"
+            >
+              <div className="p-6 bg-gradient-to-r from-blue-500 to-purple-600 text-white">
+                <h3 className="text-2xl font-bold">
+                  Your Personalized Financial Advice
+                </h3>
+              </div>
+              <div className="p-6 overflow-y-auto flex-grow">
+                <div className="prose prose-lg max-w-none">
+                  <Markdown>{financialPlan}</Markdown>
+                </div>
+              </div>
+              <div className="p-4 bg-gray-100 flex justify-end">
+                <motion.button
+                  onClick={closeModal}
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                  className="px-4 py-2 bg-gradient-to-r from-blue-500 to-purple-600 text-white rounded-lg hover:from-blue-600 hover:to-purple-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-colors duration-300"
+                >
+                  Close
+                </motion.button>
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   );
 };

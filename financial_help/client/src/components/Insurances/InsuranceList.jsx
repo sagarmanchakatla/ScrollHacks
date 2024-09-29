@@ -13,7 +13,7 @@ const InsuranceList = ({ type }) => {
         setLoading(true);
         setError(null);
         const response = await axios.post(
-          "http://localhost:8000/api/get-insurance-details",
+          "https://scrollhacks-fkqq.onrender.com/api/get-insurance-details",
           { type }
         );
         setInsuranceData(response.data);
@@ -27,18 +27,23 @@ const InsuranceList = ({ type }) => {
     fetchInsurance();
   }, [type]);
 
-  if (loading) return (
-    <div className="flex justify-center items-center h-64">
-      <Loader2 className="w-12 h-12 text-blue-500 animate-spin" />
-    </div>
-  );
+  if (loading)
+    return (
+      <div className="flex justify-center items-center h-64">
+        <Loader2 className="w-12 h-12 text-blue-500 animate-spin" />
+      </div>
+    );
 
-  if (error) return (
-    <div className="bg-red-100 border-l-4 border-red-500 text-red-700 p-4" role="alert">
-      <p className="font-bold">Error</p>
-      <p>{error}</p>
-    </div>
-  );
+  if (error)
+    return (
+      <div
+        className="bg-red-100 border-l-4 border-red-500 text-red-700 p-4"
+        role="alert"
+      >
+        <p className="font-bold">Error</p>
+        <p>{error}</p>
+      </div>
+    );
 
   return (
     <div className="w-full p-6 bg-gradient-to-br from-blue-50 to-white">

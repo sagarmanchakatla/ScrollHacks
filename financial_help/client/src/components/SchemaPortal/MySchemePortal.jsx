@@ -25,11 +25,14 @@ const MySchemePortal = () => {
     setIsLoading(true);
     setError("");
     try {
-      const response = await fetch("http://localhost:8000/api/process", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ url: "https://myscheme.gov.in" }),
-      });
+      const response = await fetch(
+        "https://scrollhacks-fkqq.onrender.com/api/process",
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ url: "https://myscheme.gov.in" }),
+        }
+      );
       const data = await response.json();
       if (response.ok) {
         setWebsiteSummary(data.answer);
@@ -64,14 +67,17 @@ const MySchemePortal = () => {
     setError("");
 
     try {
-      const response = await fetch("http://localhost:8000/api/process", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          question: inputMessage,
-          summary: websiteSummary,
-        }),
-      });
+      const response = await fetch(
+        "https://scrollhacks-fkqq.onrender.com/api/process",
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            question: inputMessage,
+            summary: websiteSummary,
+          }),
+        }
+      );
       const data = await response.json();
       if (response.ok) {
         setMessages((prev) => [...prev, { type: "bot", content: data.answer }]);

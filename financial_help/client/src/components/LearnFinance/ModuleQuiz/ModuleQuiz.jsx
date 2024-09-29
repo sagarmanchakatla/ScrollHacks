@@ -67,7 +67,7 @@
 //       try {
 //         setLoading(true);
 //         const response = await fetch(
-//           "http://localhost:8000/api/generate-quiz",
+//           "https://scrollhacks-fkqq.onrender.com/api/generate-quiz",
 //           {
 //             method: "POST",
 //             headers: {
@@ -132,7 +132,7 @@
 
 //     try {
 //       const response = await fetch(
-//         "http://localhost:8000/api/get-advice-on-quiz",
+//         "https://scrollhacks-fkqq.onrender.com/api/get-advice-on-quiz",
 //         {
 //           method: "POST",
 //           headers: {
@@ -364,7 +364,7 @@ const ModuleQuiz = () => {
       try {
         setLoading(true);
         const response = await fetch(
-          "http://localhost:8000/api/generate-quiz",
+          "https://scrollhacks-fkqq.onrender.com/api/generate-quiz",
           {
             method: "POST",
             headers: { "Content-Type": "application/json" },
@@ -435,7 +435,7 @@ const ModuleQuiz = () => {
 
     try {
       const response = await fetch(
-        "http://localhost:8000/api/get-advice-on-quiz",
+        "https://scrollhacks-fkqq.onrender.com/api/get-advice-on-quiz",
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },

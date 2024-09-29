@@ -76,7 +76,7 @@ const TopicDescription = () => {
       try {
         setLoading(true);
         const response = await fetch(
-          "http://localhost:8000/api/generate-topic-description",
+          "https://scrollhacks-fkqq.onrender.com/api/generate-topic-description",
           {
             method: "POST",
             headers: {
