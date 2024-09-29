@@ -134,12 +134,12 @@ const TopicDescription = () => {
       // <div className="flex justify-center items-center h-screen bg-blue-100">
       //   <div className="animate-spin rounded-full h-16 w-16 border-t-2 border-b-2 border-blue-500"></div>
       // </div>
-      <PrettyLoder />
+      <PrettyLoder type={"module"} />
     );
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-100 to-blue-200 py-12">
+    <div className="min-h-screen bg-gradient-to-br bg-blue-50 py-12">
       <div className="container mx-auto px-4 max-w-4xl">
         <div className="mb-8 bg-white rounded-lg shadow-lg p-6 border-l-4 border-blue-500">
           <h1 className="text-4xl font-bold mb-2 text-blue-800">
