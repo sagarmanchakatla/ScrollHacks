@@ -291,7 +291,7 @@
 import React, { useEffect, useState } from "react";
 import { useParams, Link } from "react-router-dom";
 import Markdown from "react-markdown";
-import Confetti from 'react-confetti';
+import Confetti from "react-confetti";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   ChevronRight,
@@ -302,6 +302,7 @@ import {
   BookOpen,
   Award,
 } from "lucide-react";
+import PrettyLoader from "../../Navbar/PrettyLoder";
 
 const financeTopics = [
   "Personal Finance Basics",
@@ -438,7 +439,11 @@ const ModuleQuiz = () => {
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ topic, score: totalScore, incorrectQuestions }),
+          body: JSON.stringify({
+            topic,
+            score: totalScore,
+            incorrectQuestions,
+          }),
         }
       );
 
@@ -458,20 +463,21 @@ const ModuleQuiz = () => {
 
   if (loading) {
     return (
-      <div className="flex justify-center items-center h-screen bg-gradient-to-r from-blue-200 to-blue-400">
-        <div className="animate-spin rounded-full h-16 w-16 border-t-4 border-b-4 border-blue-600"></div>
-      </div>
+      // <div className="flex justify-center items-center h-screen bg-gradient-to-r from-blue-200 to-blue-400">
+      //   <div className="animate-spin rounded-full h-16 w-16 border-t-4 border-b-4 border-blue-600"></div>
+      // </div>
+      <PrettyLoader type={"quiz"} />
     );
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-r from-blue-200 to-blue-400 py-12 px-4 sm:px-6 lg:px-8">
+    <div className="min-h-screen bg-gradient-to-r bg-blue-50 py-12 px-4 sm:px-6 lg:px-8">
       <div className="max-w-3xl mx-auto">
         <motion.h1
           initial={{ opacity: 0, y: -10 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}
-          className="text-4xl font-bold text-center mb-8 text-white"
+          className="text-4xl font-bold text-center mb-8 text-blue-900"
         >
           {topic} Quiz
         </motion.h1>
@@ -504,22 +510,26 @@ const ModuleQuiz = () => {
                   {quizQuestions[currentQuestionIndex]?.question}
                 </h2>
                 <div className="space-y-3">
-                  {quizQuestions[currentQuestionIndex]?.options.map((option, optionIndex) => (
-                    <label
-                      key={optionIndex}
-                      className="flex items-center space-x-3 p-3 rounded-lg border border-blue-200 hover:bg-blue-100 transition-colors cursor-pointer"
-                    >
-                      <input
-                        type="radio"
-                        name={`question-${currentQuestionIndex}`}
-                        value={optionIndex}
-                        checked={answers[currentQuestionIndex] === optionIndex}
-                        onChange={() => handleAnswerChange(optionIndex)}
-                        className="form-radio text-blue-600 focus:ring-blue-500"
-                      />
-                      <span className="text-gray-700">{option}</span>
-                    </label>
-                  ))}
+                  {quizQuestions[currentQuestionIndex]?.options.map(
+                    (option, optionIndex) => (
+                      <label
+                        key={optionIndex}
+                        className="flex items-center space-x-3 p-3 rounded-lg border border-blue-200 hover:bg-blue-100 transition-colors cursor-pointer"
+                      >
+                        <input
+                          type="radio"
+                          name={`question-${currentQuestionIndex}`}
+                          value={optionIndex}
+                          checked={
+                            answers[currentQuestionIndex] === optionIndex
+                          }
+                          onChange={() => handleAnswerChange(optionIndex)}
+                          className="form-radio text-blue-600 focus:ring-blue-500"
+                        />
+                        <span className="text-gray-700">{option}</span>
+                      </label>
+                    )
+                  )}
                 </div>
               </motion.div>
               <motion.button
@@ -548,7 +558,9 @@ const ModuleQuiz = () => {
                 className="text-3xl font-bold mb-4"
               >
                 Your Score:{" "}
-                <span className={score >= 50 ? "text-green-600" : "text-red-600"}>
+                <span
+                  className={score >= 50 ? "text-green-600" : "text-red-600"}
+                >
                   {score.toFixed(2)}%
                 </span>
               </motion.h2>
@@ -559,7 +571,10 @@ const ModuleQuiz = () => {
                   transition={{ delay: 0.2 }}
                   className="mb-6"
                 >
-                  <CheckCircle size={64} className="mx-auto text-green-500 mb-4" />
+                  <CheckCircle
+                    size={64}
+                    className="mx-auto text-green-500 mb-4"
+                  />
                   <p className="text-green-600 mb-4">
                     Congratulations! You passed the quiz.
                   </p>
@@ -579,7 +594,8 @@ const ModuleQuiz = () => {
                 >
                   <XCircle size={64} className="mx-auto text-red-500 mb-4" />
                   <p className="text-red-600 mb-4">
-                    You scored below 50%. We recommend reviewing the material and trying again.
+                    You scored below 50%. We recommend reviewing the material
+                    and trying again.
                   </p>
                   <Link
                     to={`/learnfinance/${id}`}
