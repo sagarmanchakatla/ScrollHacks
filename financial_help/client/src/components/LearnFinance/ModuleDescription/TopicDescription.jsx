@@ -12,6 +12,8 @@ import {
   FileText,
 } from "lucide-react";
 
+
+
 const financeTopics = [
   "Personal Finance Basics",
   "Budgeting",
@@ -104,10 +106,10 @@ const TopicDescription = () => {
   };
 
   const renderSection = (title, content, icon) => (
-    <div className="mb-6 bg-white rounded-lg shadow-md overflow-hidden">
+    <div className="mb-6 bg-white rounded-lg shadow-md overflow-hidden border border-blue-200">
       <button
         onClick={() => toggleSection(title)}
-        className="w-full px-6 py-4 flex justify-between items-center bg-green-500 text-white"
+        className="w-full px-6 py-4 flex justify-between items-center bg-gradient-to-r from-blue-500 to-blue-600 text-white"
       >
         <div className="flex items-center">
           {icon}
@@ -120,7 +122,7 @@ const TopicDescription = () => {
         )}
       </button>
       {expandedSections[title] && (
-        <div className="px-6 py-4 bg-gray-50">
+        <div className="px-6 py-4 bg-blue-50">
           <ReactMarkdown className="prose max-w-none">{content}</ReactMarkdown>
         </div>
       )}
@@ -129,115 +131,117 @@ const TopicDescription = () => {
 
   if (loading) {
     return (
-      <div className="flex justify-center items-center h-screen">
-        <div className="animate-spin rounded-full h-16 w-16 border-t-2 border-b-2 border-green-500"></div>
+      <div className="flex justify-center items-center h-screen bg-blue-100">
+        <div className="animate-spin rounded-full h-16 w-16 border-t-2 border-b-2 border-blue-500"></div>
       </div>
     );
   }
 
   return (
-    <div className="container mx-auto py-8 px-4 max-w-4xl">
-      <div className="mb-8">
-        <h1 className="text-4xl font-bold mb-2">
-          {Number(id) + 1}. {topic}
-        </h1>
-        <div className="flex space-x-4">
-          <a
-            href={description.links_for_youtube[0]}
-            className="flex items-center text-blue-600 hover:underline"
-          >
-            <PlayCircle size={20} className="mr-1" />
-            Watch videos
-          </a>
-          <Link
-            to="#"
-            className="flex items-center text-blue-600 hover:underline"
-          >
-            <FileText size={20} className="mr-1" />
-            Download PDF
-          </Link>
+    <div className="min-h-screen bg-gradient-to-br from-blue-100 to-blue-200 py-12">
+      <div className="container mx-auto px-4 max-w-4xl">
+        <div className="mb-8 bg-white rounded-lg shadow-lg p-6 border-l-4 border-blue-500">
+          <h1 className="text-4xl font-bold mb-2 text-blue-800">
+            {Number(id) + 1}. {topic}
+          </h1>
+          <div className="flex space-x-4">
+            <a
+              href={description.links_for_youtube[0]}
+              className="flex items-center text-blue-600 hover:text-blue-800 transition-colors"
+            >
+              <PlayCircle size={20} className="mr-1" />
+              Watch videos
+            </a>
+            <Link
+              to="#"
+              className="flex items-center text-blue-600 hover:text-blue-800 transition-colors"
+            >
+              <FileText size={20} className="mr-1" />
+              Download PDF
+            </Link>
+          </div>
         </div>
-      </div>
 
-      {renderSection("Background", description.background, <Book size={20} />)}
-      {renderSection("Need", description.need, <Book size={20} />)}
-      {renderSection("Importance", description.importance, <Book size={20} />)}
-      {renderSection(
-        "Detailed Description",
-        description.detailed_description,
-        <Book size={20} />
-      )}
-      {renderSection(
-        "Key Takeaways",
-        description.key_takeaways,
-        <Book size={20} />
-      )}
-      {renderSection("Conclusion", description.conclusion, <Book size={20} />)}
+        {renderSection("Background", description.background, <Book size={20} />)}
+        {renderSection("Need", description.need, <Book size={20} />)}
+        {renderSection("Importance", description.importance, <Book size={20} />)}
+        {renderSection(
+          "Detailed Description",
+          description.detailed_description,
+          <Book size={20} />
+        )}
+        {renderSection(
+          "Key Takeaways",
+          description.key_takeaways,
+          <Book size={20} />
+        )}
+        {renderSection("Conclusion", description.conclusion, <Book size={20} />)}
 
-      {description.links_for_further_study.length > 0 && (
-        <div className="mb-6 bg-white rounded-lg shadow-md overflow-hidden">
-          <button
-            onClick={() => toggleSection("Further Study")}
-            className="w-full px-6 py-4 flex justify-between items-center bg-green-500 text-white"
-          >
-            <div className="flex items-center">
-              <LinkIcon size={20} />
-              <span className="ml-2 font-semibold">Further Study</span>
-            </div>
-            {expandedSections["Further Study"] ? (
-              <ChevronUp size={20} />
-            ) : (
-              <ChevronDown size={20} />
+        {description.links_for_further_study.length > 0 && (
+          <div className="mb-6 bg-white rounded-lg shadow-md overflow-hidden border border-blue-200">
+            <button
+              onClick={() => toggleSection("Further Study")}
+              className="w-full px-6 py-4 flex justify-between items-center bg-gradient-to-r from-blue-500 to-blue-600 text-white"
+            >
+              <div className="flex items-center">
+                <LinkIcon size={20} />
+                <span className="ml-2 font-semibold">Further Study</span>
+              </div>
+              {expandedSections["Further Study"] ? (
+                <ChevronUp size={20} />
+              ) : (
+                <ChevronDown size={20} />
+              )}
+            </button>
+            {expandedSections["Further Study"] && (
+              <div className="px-6 py-4 bg-blue-50">
+                <ul className="list-disc ml-4">
+                  {description.links_for_further_study.map((link, index) => (
+                    <li key={index} className="mb-2">
+                      <a
+                        href={link}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-blue-600 hover:text-blue-800 underline"
+                      >
+                        {link}
+                      </a>
+                    </li>
+                  ))}
+                </ul>
+              </div>
             )}
-          </button>
-          {expandedSections["Further Study"] && (
-            <div className="px-6 py-4 bg-gray-50">
-              <ul className="list-disc ml-4">
-                {description.links_for_further_study.map((link, index) => (
-                  <li key={index} className="mb-2">
-                    <a
-                      href={link}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="text-blue-600 hover:text-blue-800 underline"
-                    >
-                      {link}
-                    </a>
-                  </li>
-                ))}
-              </ul>
-            </div>
+          </div>
+        )}
+
+        <div className="mt-8 flex justify-between">
+          {Number(id) > 0 && (
+            <Link
+              to={`/learnfinance/${Number(id) - 1}`}
+              className="flex items-center px-4 py-2 bg-blue-100 text-blue-700 rounded-lg hover:bg-blue-200 transition-colors"
+            >
+              <ArrowLeft size={20} className="mr-2" />
+              Previous Module
+            </Link>
+          )}
+          {Number(id) < financeTopics.length - 1 && (
+            <Link
+              to={`/learnfinance/${Number(id) + 1}`}
+              className="flex items-center px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors"
+            >
+              Next Module
+              <ArrowRight size={20} className="ml-2" />
+            </Link>
           )}
         </div>
-      )}
-
-      <div className="mt-8 flex justify-between">
-        {Number(id) > 0 && (
+        <div className="mt-4 text-center">
           <Link
-            to={`/learnfinance/${Number(id) - 1}`}
-            className="flex items-center px-4 py-2 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300 transition-colors"
+            to={`/modulequiz/${id}`}
+            className="inline-block px-6 py-3 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors shadow-md hover:shadow-lg"
           >
-            <ArrowLeft size={20} className="mr-2" />
-            Previous Module
+            Start Quiz
           </Link>
-        )}
-        {Number(id) < financeTopics.length - 1 && (
-          <Link
-            to={`/learnfinance/${Number(id) + 1}`}
-            className="flex items-center px-4 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600 transition-colors"
-          >
-            Next Module
-            <ArrowRight size={20} className="ml-2" />
-          </Link>
-        )}
-      </div>
-      <div className="mt-4 text-center">
-        <Link
-          to={`/modulequiz/${id}`}
-          className="inline-block px-6 py-3 bg-green-500 text-white rounded-lg hover:bg-green-600 transition-colors"
-        >
-          Start Quiz
-        </Link>
+        </div>
       </div>
     </div>
   );

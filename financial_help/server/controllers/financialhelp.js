@@ -28,6 +28,7 @@ exports.generateFinancialAdvice = async (req, res) => {
 
   Format the advice in clear, easy-to-read Markdown with appropriate headers and bullet points.`;
 
+
   try {
     const result = await model.generateContent(prompt);
     res.status(200).json({ financialAdvice: result.response.text() });

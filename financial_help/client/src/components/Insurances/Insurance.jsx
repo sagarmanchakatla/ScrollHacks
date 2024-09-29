@@ -1,43 +1,58 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import InsuranceList from "./InsuranceList";
+
+const InsuranceButton = ({ type, currentType, onClick, children }) => (
+  <button
+    onClick={() => onClick(type)}
+    className={`
+      py-3 px-6 text-lg font-semibold transition-all duration-300
+      ${currentType === type
+        ? "bg-blue-600 text-white shadow-lg transform -translate-y-1"
+        : "bg-white text-blue-600 hover:bg-blue-50"
+      }
+      ${type === "car" && "rounded-l-lg"}
+      ${type === "life" && "rounded-r-lg"}
+      border-r border-blue-200 last:border-r-0
+    `}
+  >
+    {children}
+  </button>
+);
 
 const Insurance = () => {
   const [insuranceType, setInsuranceType] = useState("car");
 
   return (
-    <div className="w-full max-w-4xl mx-auto p-6">
+    <div className="w-full max-w-6xl mx-auto p-6 bg-gradient-to-br from-blue-50 to-white min-h-screen">
+      <h1 className="text-4xl font-bold text-blue-800 text-center mb-8">
+        Insurance Explorer
+      </h1>
+      
       {/* Navigation Bar */}
-      <nav className="flex justify-center mb-8">
-        <button
-          onClick={() => setInsuranceType("car")}
-          className={`py-2 px-6 rounded-l-lg text-lg font-semibold border border-gray-300 transition-colors ${
-            insuranceType === "car"
-              ? "bg-blue-500 text-white border-blue-500"
-              : "bg-white text-gray-800 hover:bg-gray-100"
-          }`}
-        >
-          Car Insurance
-        </button>
-        <button
-          onClick={() => setInsuranceType("health")}
-          className={`py-2 px-6 text-lg font-semibold border border-gray-300 transition-colors ${
-            insuranceType === "health"
-              ? "bg-blue-500 text-white border-blue-500"
-              : "bg-white text-gray-800 hover:bg-gray-100"
-          }`}
-        >
-          Health Insurance
-        </button>
-        <button
-          onClick={() => setInsuranceType("life")}
-          className={`py-2 px-6 rounded-r-lg text-lg font-semibold border border-gray-300 transition-colors ${
-            insuranceType === "life"
-              ? "bg-blue-500 text-white border-blue-500"
-              : "bg-white text-gray-800 hover:bg-gray-100"
-          }`}
-        >
-          Life Insurance
-        </button>
+      <nav className="flex justify-center mb-12">
+        <div className="bg-white rounded-lg shadow-md overflow-hidden">
+          <InsuranceButton
+            type="car"
+            currentType={insuranceType}
+            onClick={setInsuranceType}
+          >
+            Car Insurance
+          </InsuranceButton>
+          <InsuranceButton
+            type="health"
+            currentType={insuranceType}
+            onClick={setInsuranceType}
+          >
+            Health Insurance
+          </InsuranceButton>
+          <InsuranceButton
+            type="life"
+            currentType={insuranceType}
+            onClick={setInsuranceType}
+          >
+            Life Insurance
+          </InsuranceButton>
+        </div>
       </nav>
 
       {/* Insurance List */}
