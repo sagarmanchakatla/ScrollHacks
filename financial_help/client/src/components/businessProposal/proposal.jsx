@@ -84,7 +84,7 @@ const ProposalForm = () => {
   const sendEmail = async () => {
     try {
       const emailData = {
-        to: "riddhijlalla@gmail.com",
+        to: "zoyah768@gmail.com",
         subject: `Business Proposal - ${userData.companyName}`,
         userData: { ...userData },
         proposalContent: proposal,

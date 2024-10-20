@@ -47,7 +47,7 @@
 const axios = require("axios");
 
 // Load environment variables from the .env file
-const groqApiKey = "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";
+const groqApiKey = "";
 
 if (!groqApiKey) {
   throw new Error("GROQ_API_KEY environment variable is not set");
